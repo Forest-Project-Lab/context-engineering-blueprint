@@ -40,7 +40,7 @@ llm_context: always
 
 ### 1.1 頂点の主張
 
-**Claude Code 用の単一プラグイン `llm-docs-governance` を実装する。** このプラグインは、(a) 情報管理の手続きと判断を担う **6 個の Skill**、(b) 不変条件を機械的に強制する **少数の Hook**、(c) Hook が呼ぶ **決定論的バリデータ・スクリプト群**、(d) 文書型テンプレート、(e) 薄いルーターとしての CLAUDE.md / AGENTS.md ひな型、から成る。これを任意のリポジトリで有効化すれば、人間と LLM の双方が情報の地位・現行性・依存を追跡でき、変更と退行に耐えられる開発を継続できる。
+**Claude Code 用の単一プラグイン `context-engineering-blueprint` を実装する。** このプラグインは、(a) 情報管理の手続きと判断を担う **6 個の Skill**、(b) 不変条件を機械的に強制する **少数の Hook**、(c) Hook が呼ぶ **決定論的バリデータ・スクリプト群**、(d) 文書型テンプレート、(e) 薄いルーターとしての CLAUDE.md / AGENTS.md ひな型、から成る。これを任意のリポジトリで有効化すれば、人間と LLM の双方が情報の地位・現行性・依存を追跡でき、変更と退行に耐えられる開発を継続できる。
 
 ### 1.2 主張を支える3本の柱
 
@@ -729,7 +729,7 @@ if __name__ == "__main__":
 ### 10.1 プラグイン構成
 
 ```
-llm-docs-governance/
+context-engineering-blueprint/
 ├── .claude-plugin/
 │   └── plugin.json                 # プラグイン定義（name/version/description）
 ├── hooks/
@@ -761,7 +761,7 @@ llm-docs-governance/
 
 `plugin.json` の最小例:
 ```json
-{ "name": "llm-docs-governance",
+{ "name": "context-engineering-blueprint",
   "version": "0.1.0",
   "description": "LLM開発のための情報統治。文書の地位・依存・現行性を Skills と Hooks で強制する。" }
 ```
@@ -770,7 +770,7 @@ llm-docs-governance/
 
 ### 10.2 配布・有効化と、プレーン `.claude/` フォールバック
 
-- **配布**: プラグインをマーケットプレイス（リポジトリ）として公開し、各リポジトリで `/plugin install llm-docs-governance@<marketplace>` で導入する。`/reload-plugins` で hooks/scripts/agents の変更を反映する。
+- **配布**: プラグインをマーケットプレイス（リポジトリ）として公開し、各リポジトリで `/plugin install context-engineering-blueprint@<marketplace>` で導入する。`/reload-plugins` で hooks/scripts/agents の変更を反映する。
 - **適用**: プラグイン有効時、`hooks/hooks.json` の Hook が自動で効く。各リポジトリでは `docs-system-init` Skill を一度呼んで最小敷設する。
 - **フォールバック（プラグインを使わない場合）**: `docs-system-init` が `.claude/settings.json` に第8章 Hook を書き、`.claude/scripts/` にスクリプトを置き、`.claude/skills/` に各 Skill を置く。この場合パスは `${CLAUDE_PROJECT_DIR}/.claude/scripts/...`。
 - **パス解決の使い分け**: プラグイン同梱 = `${CLAUDE_PLUGIN_ROOT}`、Skill 同梱資源 = `${CLAUDE_SKILL_DIR}`、プロジェクト設置 = `${CLAUDE_PROJECT_DIR}`。
